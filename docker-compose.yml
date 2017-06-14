@@ -48,9 +48,9 @@ services:
     environment:
       GITLAB_OMNIBUS_CONFIG: |
         external_url 'https://gitlab.indoorsystechnologies.com' 
-        nginx[‘listen_addresses’] = [‘127.0.0.1’, “[::1]”]
-        nginx[‘listen_port’] = 8081 
-        nginx[‘custom_gitlab_server_config’] = “location ^~/.well-known {\n alias /usr/share/nginx/html/.well-known;\n}\n”                                                                                                         
+        nginx['listen_addresses'] = ['127.0.0.1', "[::1]"]
+        nginx['listen_port'] = 8081 
+        nginx['custom_gitlab_server_config'] = "location ^~/.well-known {\n alias /usr/share/nginx/html/.well-known;\n}\n"                                                                                                         
       VIRTUAL_HOST: gitlab.indoorsystechnologies.com
       VIRTUAL_PORT: 443
       VIRTUAL_PROTO: https
