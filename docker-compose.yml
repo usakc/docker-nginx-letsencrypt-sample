@@ -45,7 +45,7 @@ services:
       - /srv/gitlab/logs:/var/log/gitlab
       - /srv/gitlab/data:/var/opt/gitlab
       - ./volumes/proxy/certs:/etc/gitlab/ssl/
-    expose:
+    ports:
       - "8081:8081"
     environment:
       GITLAB_OMNIBUS_CONFIG: |
