@@ -46,7 +46,7 @@ services:
       - /srv/gitlab/data:/var/opt/gitlab
       - ./volumes/proxy/certs:/etc/gitlab/ssl/
     expose:
-      "8081:8081"
+      - "8081:8081"
     environment:
       GITLAB_OMNIBUS_CONFIG: |
         external_url 'https://gitlab.indoorsystechnologies.com' 
