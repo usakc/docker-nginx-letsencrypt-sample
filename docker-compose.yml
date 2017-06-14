@@ -66,7 +66,7 @@ services:
     hostname: gitdata
     image: gitlab/gitlab-ce:latest
     volumes:
-      - /etc/gitlab:/etc/gitlab
-      - /var/log/gitlab:/var/log/gitlab
-      - /var/opt/gitlab:/var/opt/gitlab
+      - /srv/gitlab/config:/etc/gitlab
+      - /srv/gitlab/logs:/var/log/gitlab
+      - /srv/gitlab/data:/var/opt/gitlab
       - ./volumes/proxy/certs:/etc/gitlab/ssl/
