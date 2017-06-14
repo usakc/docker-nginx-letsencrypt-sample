@@ -37,25 +37,36 @@ services:
     environment:
       - NGINX_DOCKER_GEN_CONTAINER=nginx-gen
 
-  gitlab:                                                                                                                                                                
-    image: "gitlab/gitlab-ce:latest"
-    container_name: gitlab                                                                                                                            
-    volumes:
-      - /srv/gitlab/config:/etc/gitlab
-      - /srv/gitlab/logs:/var/log/gitlab
-      - /srv/gitlab/data:/var/opt/gitlab
-      - ./volumes/proxy/certs:/etc/gitlab/ssl/
+  gitlab-server:
+    hostname: gitlab.indoorsystechnologies.com
+    expose:
+      - "8100"
     ports:
-      - "8081:8081"
+      - 8101:22/tcp
+  
+    labels:
+      io.rancher.sidekicks: gitlab-data
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'https://gitlab.indoorsystechnologies.com' 
-        nginx['listen_addresses'] = ['127.0.0.1', "[::1]"]
-        nginx['listen_port'] = 8081 
-        nginx['custom_gitlab_server_config'] = "location ^~/.well-known {\n alias /usr/share/nginx/html/.well-known;\n}\n"                                                                                                         
+        external_url 'https://gitlab.indoorsystechnologies.com/'
+        gitlab_rails['gitlab_shell_ssh_port'] = 8101
       VIRTUAL_HOST: gitlab.indoorsystechnologies.com
-      VIRTUAL_PORT: 443
-      VIRTUAL_PROTO: https
+      VIRTUAL_PORT: 8100
       LETSENCRYPT_HOST: gitlab.indoorsystechnologies.com
       LETSENCRYPT_EMAIL: krystof@snsolution.cz
-    restart: always
+    image: gitlab/gitlab-ce:latest
+    volumes_from:
+      - gitlab-data
+
+  gitlab-data:
+    labels:
+      io.rancher.container.start_once: 'true'
+    entrypoint:
+      - /bin/true
+    hostname: gitdata
+    image: gitlab/gitlab-ce:latest
+    volumes:
+      - /etc/gitlab:/etc/gitlab
+      - /var/log/gitlab:/var/log/gitlab
+      - /var/opt/gitlab:/var/opt/gitlab
+      - ./volumes/proxy/certs:/etc/gitlab/ssl/
